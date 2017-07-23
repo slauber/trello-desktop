@@ -24,7 +24,7 @@ function createMainWindow() {
     height: lastWindowState.height,
     icon: process.platform === 'linux' && path.join(__dirname, 'static', 'Icon.png'),
     minWidth: 400,
-    minHeight: 200,
+    minHeight: 350,
     titleBarStyle: 'hidden-inset',
     autoHideMenuBar: true,
     webPreferences: {
@@ -65,6 +65,9 @@ app.on('ready', () => {
 
   page.on('dom-ready', () => {
     page.insertCSS(fs.readFileSync(path.join(__dirname, 'browser.css'), 'utf8'));
+    if (config.get('customLabelNames')) {
+      page.insertCSS(fs.readFileSync(path.join(__dirname, 'custom.css'), 'utf8'));
+    }
     mainWindow.show();
   });
 
@@ -92,7 +95,7 @@ app.on('ready', () => {
   const template = [{
     label: 'Application',
     submenu: [
-      {label: 'About Application', selector: 'orderFrontStandardAboutPanel:'},
+      {label: 'About Trello Desktop', selector: 'orderFrontStandardAboutPanel:'},
       {type: 'separator'},
       {
         label: 'Quit', accelerator: 'Command+Q', click: () => {
@@ -110,6 +113,15 @@ app.on('ready', () => {
       {label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:'},
       {label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:'},
       {label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:'}
+    ]
+  },{
+    label: 'Customizations',
+    submenu: [
+      {label: 'Show label names', enabled: !config.get('customLabelNames'), selector: 'cssLabelNames:', click: (menuItem) => {
+        mainWindow.webContents.insertCSS(fs.readFileSync(path.join(__dirname, 'custom.css'), 'utf8'));
+        config.set('customLabelNames', true);
+        menuItem.enabled = false;
+      }}
     ]
   }
   ];

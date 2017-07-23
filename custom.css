@@ -1,0 +1,20 @@
+/* Show labels */
+.card-label.mod-card-front {
+    line-height: 10pt !important;
+    width: auto !important;
+}
+
+.list-card-labels .card-label {
+  border-radius: 0px 0px 4px 4px;
+  font-size: 11px;
+  line-height: 10px;
+  margin: 0px;
+  padding: 0px 3px 6px  !important;
+  text-shadow: none;
+  width: auto;
+}
+
+.list-card-labels {
+  top: -8px;
+  margin-bottom: -2px;
+}
